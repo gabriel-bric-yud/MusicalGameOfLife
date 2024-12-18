@@ -2,16 +2,28 @@ const startBtn = document.querySelector("#startBtn");
 const resetBtn = document.querySelector("#resetBtn");
 let startBool = false;
 
-const game = document.querySelector("#game");
+let game = document.querySelector("#game");
 let cellWidthDimension = 16 // hect: 16 || chrom: 16
 let numRows = 15; // hect: 12 || chrom: 14
-let gridDimension = 600 / cellWidthDimension;
+let gridDimension = game.getBoundingClientRect().width / cellWidthDimension;
 //let boardSizeData = game.getBoundingClientRect();
 //let gridDimension = boardSizeData.height / 40;
 
 let gameTick;
 let birthList = [];
 let deathList = [];
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+window.addEventListener("resize", (e) => {
+  gridDimension = game.getBoundingClientRect().width / cellWidthDimension;
+
+  document.querySelectorAll(".cell").forEach((elem) => {
+    elem.style.height = gridDimension + "px"
+    elem.style.width = gridDimension + "px"
+  })
+})
+
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -52,7 +64,6 @@ function createRow(rowNum) {
 }
 
 function createGrid(numCells) {
- game.style.height = (gridDimension * numRows) + "px"
  for (let i = 1; i <= numRows; i++) {
  createRow(i)
  }
