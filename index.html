@@ -17,15 +17,40 @@
         <a href = "">Musical Game of Life</a>
       </div>
       
-
       <div id = "game"></div>
 
-      <div id = "btnDiv">
-        <div id = "startBtn">START GAME</div>
-        <div id = "resetBtn">RESET</div>
-      </div>
-      
+      <div id = "controlsOuter">
+        <div id = "btnDiv">
+          <div id = "startBtn">START GAME</div>
+          <div id = "resetBtn">RESET</div>
+        </div>
 
+        <div id = "controlsInner">
+          <label for = "scaleCtl">Scale:</label>
+          <select id = "scaleCtl">
+            <option value = "Major"> Major</option>
+            <option value = "Harmonic Minor"> Harmonic Minor</option>
+            <option value = "Melodic Minor"> Melodic Minor</option>
+            <option value = "Major Pentatonic"> Major Pentatonic</option>
+            <option value = "Chromatic">Chromatic</option>
+          </select>
+
+          <label for = "tuningCtl">Tuning:</label>
+          <select id = "tuningCtl">
+            <option value = "Major"> Major Thirds</option>
+            <option value = "Harmonic Minor"> Perfect Fourths</option>
+            <option value = "Melodic Minor"> Perfect 5ths</option>
+          </select>
+
+          <label for = "rowCtl">Num Rows: <span id = "sizeValue">15</span> </label>
+          <input type="range" min="5" max="21" value="16" class="slider" id="sizeSlider">
+
+          <label for = "columnCtl">Num Columns: <span id = "sizeValue">15</span> </label>
+          <input type="range" min="5" max="21" value="16" class="slider" id="sizeSlider">
+
+        </div>
+  
+      </div>
       
     </div>
     
