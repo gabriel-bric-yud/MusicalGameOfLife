@@ -124,10 +124,25 @@ label {
   pointer-events: none;
   color: orange;
   font-size: 9px;
-  text-align: center; 
+  text-align: center;
+
 }
 
+#ruleset {
+  color: #f5f5f5;
+  display: grid;
+  text-align: center;
+  margin: 10px auto;
+  font-weight: bold;
+}
 
+#ruleset span {
+  font-size: 15px;
+  margin: 5px auto;
+  font-weight: normal;
+  padding: 5px 40px;
+
+}
 
 @keyframes glowing {
   50% {  background-color: yellow;}
