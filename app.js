@@ -770,29 +770,29 @@ rowCtrl.addEventListener("change", (e) => {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-function introShape(startCell) {
+function introShape(startCell) { //test
   startCell.dataset.alive = "t";
   let startRow = Number(startCell.dataset.row)
   let startCol = Number(startCell.dataset.col)
   startCell.classList.add("grow")
 
-  document.getElementById(`${startCol + 1}/${startRow}`).dataset.alive = "t"
-  document.getElementById(`${startCol - 1}/${startRow}`).dataset.alive = "t"
-  document.getElementById(`${startCol}/${startRow + 2}`).dataset.alive = "t"
-  document.getElementById(`${startCol}/${startRow - 2}`).dataset.alive = "t"
-  document.getElementById(`${startCol - 1}/${startRow + 3}`).dataset.alive = "t"
-  document.getElementById(`${startCol - 1}/${startRow - 3}`).dataset.alive = "t"
-  document.getElementById(`${startCol + 1}/${startRow + 3}`).dataset.alive = "t"
-  document.getElementById(`${startCol + 1}/${startRow - 3}`).dataset.alive = "t"
+  document.getElementById(`${startCol}/${startRow + 1}`).dataset.alive = "t"
+  document.getElementById(`${startCol}/${startRow - 1}`).dataset.alive = "t"
+  document.getElementById(`${startCol + 2}/${startRow}`).dataset.alive = "t"
+  document.getElementById(`${startCol - 2}/${startRow}`).dataset.alive = "t"
+  document.getElementById(`${startCol +3}/${startRow - 1}`).dataset.alive = "t"
+  document.getElementById(`${startCol - 3}/${startRow - 1}`).dataset.alive = "t"
+  document.getElementById(`${startCol + 3}/${startRow + 1}`).dataset.alive = "t"
+  document.getElementById(`${startCol -3 }/${startRow + 1}`).dataset.alive = "t"
 
-  document.getElementById(`${startCol + 1}/${startRow}`).classList.add("grow")
-  document.getElementById(`${startCol - 1}/${startRow}`).classList.add("grow")
-  document.getElementById(`${startCol}/${startRow + 2}`).classList.add("grow")
-  document.getElementById(`${startCol}/${startRow - 2}`).classList.add("grow")
-  document.getElementById(`${startCol - 1}/${startRow + 3}`).classList.add("grow")
-  document.getElementById(`${startCol - 1}/${startRow - 3}`).classList.add("grow")
-  document.getElementById(`${startCol + 1}/${startRow + 3}`).classList.add("grow")
-  document.getElementById(`${startCol + 1}/${startRow - 3}`).classList.add("grow")
+  document.getElementById(`${startCol}/${startRow + 1}`).classList.add("grow")
+  document.getElementById(`${startCol}/${startRow - 1}`).classList.add("grow")
+  document.getElementById(`${startCol + 2}/${startRow}`).classList.add("grow")
+  document.getElementById(`${startCol - 2}/${startRow}`).classList.add("grow")
+  document.getElementById(`${startCol +3}/${startRow - 1}`).classList.add("grow")
+  document.getElementById(`${startCol - 3}/${startRow - 1}`).classList.add("grow")
+  document.getElementById(`${startCol + 3}/${startRow + 1}`).classList.add("grow")
+  document.getElementById(`${startCol -3 }/${startRow + 1}`).classList.add("grow")
 
 
 }
