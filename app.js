@@ -46,7 +46,7 @@ function createCell(col, row) {
       e.target.dataset.alive == "f" ? e.target.dataset.alive = "t" : e.target.dataset.alive = "f"; 
     }
   })
-  return cell;``
+  return cell;
 }
 
 function createRow(col, row) {
@@ -770,6 +770,33 @@ rowCtrl.addEventListener("change", (e) => {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+function introShape(startCell) {
+  startCell.dataset.alive = "t";
+  let startRow = Number(startCell.dataset.row)
+  let startCol = Number(startCell.dataset.col)
+  startCell.classList.add("grow")
+
+  document.getElementById(`${startCol + 1}/${startRow}`).dataset.alive = "t"
+  document.getElementById(`${startCol - 1}/${startRow}`).dataset.alive = "t"
+  document.getElementById(`${startCol}/${startRow + 2}`).dataset.alive = "t"
+  document.getElementById(`${startCol}/${startRow - 2}`).dataset.alive = "t"
+  document.getElementById(`${startCol - 1}/${startRow + 3}`).dataset.alive = "t"
+  document.getElementById(`${startCol - 1}/${startRow - 3}`).dataset.alive = "t"
+  document.getElementById(`${startCol + 1}/${startRow + 3}`).dataset.alive = "t"
+  document.getElementById(`${startCol + 1}/${startRow - 3}`).dataset.alive = "t"
+
+  document.getElementById(`${startCol + 1}/${startRow}`).classList.add("grow")
+  document.getElementById(`${startCol - 1}/${startRow}`).classList.add("grow")
+  document.getElementById(`${startCol}/${startRow + 2}`).classList.add("grow")
+  document.getElementById(`${startCol}/${startRow - 2}`).classList.add("grow")
+  document.getElementById(`${startCol - 1}/${startRow + 3}`).classList.add("grow")
+  document.getElementById(`${startCol - 1}/${startRow - 3}`).classList.add("grow")
+  document.getElementById(`${startCol + 1}/${startRow + 3}`).classList.add("grow")
+  document.getElementById(`${startCol + 1}/${startRow - 3}`).classList.add("grow")
+
+
+}
+
 
 
 currentScale = scaleCtrl.value
@@ -778,6 +805,8 @@ setScaleCallback(currentScale)
 numColumns = columnCtrl.value;
 numRows = rowCtrl.value
 createGrid(numColumns, numRows)
+console.log(document.getElementById("9/9"))
+introShape(document.getElementById("9/9"))
 
 startBtn.addEventListener("click", (e) => {
   if (!startBool) {
