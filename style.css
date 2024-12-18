@@ -1,0 +1,148 @@
+body {
+  background-color: black;
+  margin: 0px;
+  height: 100vh;
+  background: radial-gradient(navy, black);
+
+}
+
+* {
+  font-family: "Tektur";
+}
+
+#app {
+  width: 100%;
+  display: grid;
+  margin: 0 auto;
+
+}
+
+.titleDiv {
+  display: grid;
+  width: fit-content;
+  margin: 20px auto;
+  padding: 0px;
+  color: white;
+  text-align: center;
+  z-index: 1000;
+}
+  
+.titleDiv a {
+  margin: 0 auto;
+  font-family: "Tektur", system-ui;
+  color: Orange;
+  font-size: 2.5em ;
+  text-decoration: none;
+}
+
+#game {
+  display: flex;
+  flex-wrap: wrap;
+  width: 600px;
+  height: 600px;
+  margin: 0 auto;
+  /** border: 4px dashed white; */
+  box-shadow: 0px 0px 5px 5px orange;
+  border-radius: 5px;
+  background-color: black;
+
+}
+
+#btnDiv {
+  display: flex;
+  margin: 20px auto;
+
+}
+
+#startBtn, #resetBtn {
+  margin: 10px 20px;
+  width: 200px;
+  text-align: center;
+  border-radius: 20px;
+  background-color: yellow;
+  background-color: #47F5A1;
+  padding: 20px;
+  font-weight: bolder;
+  font-size: 25px;
+  color: black;
+
+}
+
+#resetBtn {
+  background-color: red;
+  background-color: #F55C47;
+}
+
+.cell {
+  box-sizing:border-box;
+  text-decoration:none;
+  border-width: 1px 0px 1px 0px;
+  border-style: solid;
+  border-color: navy;
+  border: 1px dotted navy;
+  background-color: transparent;
+  border-radius: 10%;
+  color: orange;
+  text-align: center; 
+  align-content: center;
+  font-size: 9px;
+}
+
+.cell:hover {
+  background-color: green !important;
+
+}
+
+@keyframes glowing {
+  50% {  background-color: yellow;}
+  100% { background-color: black;}
+}
+
+.flash {
+  animation: glowing 3000ms 1;
+}
+
+@keyframes live4 {
+  10% {  background-color: darkgreen;}
+  80% {  background-color: green;}
+  90% { background-color: olive;}
+  100% { background-color: olive;}
+}
+
+@keyframes die {
+  0% {  background-color: olive;}
+  100% { background-color: transparent;}
+}
+
+
+@keyframes live3 {
+  0% {  background-color: white;}
+  25% {  background-color: yellow;}
+  50% {  background-color: lightgreen;}
+  75% {  background-color: olive;}
+  100% { background-color: darkgreen;}
+}
+
+
+@keyframes live2 {
+  0% {  background-color: white;}
+  25% {  background-color: yellow;}
+  50% {  background-color: lightgreen;}
+  60% {  background-color: darkgreen;}
+  75% {  background-color: olive}
+  100% { background-color: green;}
+}
+
+@keyframes live {
+  0% {  background-color: black;}
+  100% { background-color: green;}
+}
+
+.grow {
+  animation: live 0ms 1 forwards;
+
+}
+
+.bury {
+  animation: die 0ms 1 forwards;
+}
