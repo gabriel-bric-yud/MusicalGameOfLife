@@ -30,9 +30,11 @@ function createCell(col, row) {
   cell.dataset.alive = "f";
   cell.dataset.row = row;
   cell.dataset.col = col;
+  let txt = document.createElement("span")
+  cell.appendChild(txt)
   setNoteNum(cell)
   if (cell.dataset.row == 1 || cell.dataset.row == numRows || cell.dataset.col == 1 || cell.dataset.col == numColumns || true) {
-    cell.innerHTML = cell.dataset.note //getFrequencyMajorHectatonic || getFrequencyChromatic || getFrequencyMajorPentatonic || getFrequencyHarmonicMinorHectatonic || getFrequencyMelodicMinorHectatonic 
+    txt.innerHTML = cell.dataset.note //getFrequencyMajorHectatonic || getFrequencyChromatic || getFrequencyMajorPentatonic || getFrequencyHarmonicMinorHectatonic || getFrequencyMelodicMinorHectatonic 
   }
   cell.dataset.note = cell.dataset.note
   cell.id = col + "/" + row;
@@ -149,7 +151,7 @@ function clearAllCells() {
     elem.classList.remove("bury")
     elem.style.backgroundColor = "transparent"
     elem.style.borderColor = "navy"
-    elem.innerHTML = elem.dataset.note
+    elem.querySelector("span").innerHTML = elem.dataset.note
     elem.style.color = "orange"
   })
 }
@@ -176,7 +178,7 @@ function updateCells() {
     elem.style.color = "white"
     let noteData = currentScaleCallback(elem.dataset.noteNum)
     playOsc(noteData[0]) 
-    elem.innerHTML = noteData[1]
+    elem.querySelector("span").innerHTML = noteData[1]
   })
 
   deathList.forEach((elem) => {
@@ -185,7 +187,7 @@ function updateCells() {
     elem.classList.add("bury")
     elem.style.color = "orange"
     elem.style.backgroundColor = "transparent"
-    elem.innerHTML = ""
+    elem.querySelector("span").innerHTML = ""
   })
 }
 
@@ -195,7 +197,7 @@ function gameOfLife() {
   document.querySelectorAll(".cell").forEach((elem) => { 
     //elem.style.borderColor = "transparent"
     if (elem.dataset.alive == "f") {
-      elem.innerHTML = ""
+      elem.querySelector("span").innerHTML = ""
     }
   })
   gameTick = setInterval((e) => {
@@ -632,7 +634,7 @@ function setNoteNum(elem) {
   let noteData = currentScaleCallback(noteNum)
   elem.dataset.noteNum = noteNum
   elem.dataset.note = noteData[1]
-  elem.innerHTML = noteData[1]  
+  elem.querySelector("span").innerHTML = noteData[1]  
 
 }
 
@@ -727,7 +729,7 @@ scaleCtrl.addEventListener("change", (e) => {
     document.querySelectorAll(".cell").forEach((elem) => {
       let noteData = currentScaleCallback(elem.dataset.noteNum)
       elem.dataset.note = noteData[1]
-      elem.innerHTML = noteData[1]
+      elem.querySelector("span").innerHTML = noteData[1]
     })
 
   }

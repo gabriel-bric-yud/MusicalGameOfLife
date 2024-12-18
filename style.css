@@ -120,6 +120,13 @@ label {
   font-size: 9px;
 }
 
+.cell span {
+  pointer-events: none;
+  color: orange;
+  font-size: 9px;
+  text-align: center; 
+}
+
 
 
 @keyframes glowing {
