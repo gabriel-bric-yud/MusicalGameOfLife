@@ -15,7 +15,9 @@ let deathList = [];
 let cellWidthDimension = 16 // hect: 16 || chrom: 16
 let numRows = 15; // hect: 12 || chrom: 14
 let gridDimension = game.getBoundingClientRect().width / cellWidthDimension;
-let currentScaleCallback
+let currentScaleCallback = getFrequencyChromatic
+let currentScale = "pentatonic"
+let tuningInterval
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -26,8 +28,8 @@ function createCell(col, row) {
   cell.dataset.alive = "f";
   cell.dataset.row = row;
   cell.dataset.col = col;
-  cell.dataset.noteNum = (row *2) + col  + 4  // pent: row + (row * 0) + 6 + col - 3 ***** hect: row + (row * 1) + 7 + col - 3 || cell.dataset.noteNum = (row *2) + col - 3 || (row *2) + col + 4 ***** chrom: (row * 4) + col - 5 || row + (row * 4) + col - 2 || (row *3) + col 
-  let noteData = getFrequencyMajorHectatonic(cell.dataset.noteNum)
+  cell.dataset.noteNum = (row * 2) + col - 3  // pent: row + (row * 0) + 6 + col - 3 ***** hect: row + (row * 1) + 7 + col - 3 || cell.dataset.noteNum = (row *2) + col - 3 || (row *2) + col + 4 ***** chrom: (row * 4) + col - 5 || row + (row * 4) + col - 2 || (row *3) + col 
+  let noteData = getFrequencyChromatic(cell.dataset.noteNum)
   if (cell.dataset.row == 1 || cell.dataset.row == numRows || cell.dataset.col == 1 || cell.dataset.col == cellWidthDimension || true) {
     cell.innerHTML = noteData[1] //getFrequencyMajorHectatonic || getFrequencyChromatic || getFrequencyMajorPentatonic || getFrequencyHarmonicMinorHectatonic || getFrequencyMelodicMinorHectatonic 
   }
@@ -173,7 +175,7 @@ function updateCells() {
     elem.classList.remove("bury")
     elem.classList.add("grow")
     elem.style.color = "white"
-    let noteData = getFrequencyMajorHectatonic(elem.dataset.noteNum)
+    let noteData = getFrequencyChromatic(elem.dataset.noteNum)
     playOsc(noteData[0]) 
     elem.innerHTML = noteData[1]
   })
@@ -231,14 +233,19 @@ function getFrequencyChromatic(num) {
   let noteNum;
   let note = "";
   let freq;
-  //console.log(num)
+  console.log(num)
+
   if (num <= 11) {
     noteNum = Number(num);
   }
   else {
-    //console.log("note original: " + num)
-    noteNum = (num % 12);
-    //console.log("note modulus: " + noteNum)
+    if (Number(num) >= 83) {
+      noteNum =  (Number(num) % 84)
+      noteNum = (noteNum % 12);
+    }
+    else {
+      noteNum = (num % 12);
+    }
   }
 
   switch(noteNum) {
@@ -294,7 +301,7 @@ function getFrequencyChromatic(num) {
 
   let multiplier = 1
   if (num > 11) {
-    multiplier = Math.floor(num /12);
+    num > 83 ? multiplier = Math.floor((Number(num) % 84) /12) : multiplier = Math.floor(num /12);
     if (multiplier < 2) {
       note = note + (multiplier + 1) 
       freq *= 2 
@@ -307,7 +314,7 @@ function getFrequencyChromatic(num) {
     }
   }
   //console.log("final freq: " + freq)
-  console.log("note name: " + note + " " + num)
+  //console.log("note name: " + note + " " + num)
   return [freq, note];
 }
 
@@ -316,11 +323,18 @@ function getFrequencyMajorHectatonic(num) {
   let noteNum;
   let note = "";
   let freq;
+  
   if (num <= 6) {
     noteNum = Number(num);
   }
   else {
-    noteNum = (num % 7);
+    if (Number(num) >= 48) {
+      noteNum =  (Number(num) % 49)
+      noteNum = (noteNum % 7);
+    }
+    else {
+      noteNum = (num % 7);
+    }
   }
 
   switch(noteNum) {
@@ -355,8 +369,8 @@ function getFrequencyMajorHectatonic(num) {
   }
 
   let multiplier = 1
-  if (num >= 7) {
-    multiplier = Math.floor(num /7);
+  if (num > 6) {
+    num > 48 ? multiplier = Math.floor((Number(num) % 49) /7) : multiplier = Math.floor(num /7);
 
     if (multiplier < 2) {
       note = note + (multiplier + 1) 
@@ -386,7 +400,13 @@ function getFrequencyMajorPentatonic(num) {
     noteNum = Number(num);
   }
   else {
-    noteNum = (num % 5);
+    if (Number(num) >= 35) {
+      noteNum =  (Number(num) % 36)
+      noteNum = (noteNum % 5);
+    }
+    else {
+      noteNum = (num % 5);
+    }
   }
 
   switch(noteNum) {
@@ -414,8 +434,9 @@ function getFrequencyMajorPentatonic(num) {
 
 
   let multiplier = 1
-  if (num >= 5) {
-    multiplier = Math.floor(num /5);
+  if (num > 4) {
+    num > 35 ? multiplier = Math.floor((Number(num) % 36) /5) : multiplier = Math.floor(num /5);
+
 
     if (multiplier < 2) {
       note = note + (multiplier + 1) 
@@ -442,7 +463,13 @@ function getFrequencyMelodicMinorHectatonic(num) {
     noteNum = Number(num);
   }
   else {
-    noteNum = (num % 7);
+    if (Number(num) >= 48) {
+      noteNum =  (Number(num) % 49)
+      noteNum = (noteNum % 7);
+    }
+    else {
+      noteNum = (num % 7);
+    }
   }
 
 
@@ -478,8 +505,8 @@ function getFrequencyMelodicMinorHectatonic(num) {
   }
   
   let multiplier = 1
-  if (num >= 7) {
-    multiplier = Math.floor(num /7);
+  if (num > 6) {
+    num > 48 ? multiplier = Math.floor((Number(num) % 49) /7) : multiplier = Math.floor(num /7);
 
     if (multiplier < 2) {
       note = note + (multiplier + 1) 
@@ -506,8 +533,15 @@ function getFrequencyHarmonicMinorHectatonic(num) {
     noteNum = Number(num);
   }
   else {
-    noteNum = (num % 7);
+    if (Number(num) >= 48) {
+      noteNum =  (Number(num) % 49)
+      noteNum = (noteNum % 7);
+    }
+    else {
+      noteNum = (num % 7);
+    }
   }
+
 
   switch(noteNum) {
     case 0:
@@ -541,8 +575,9 @@ function getFrequencyHarmonicMinorHectatonic(num) {
   }
 
   let multiplier = 1
-  if (num >= 7) {
-    multiplier = Math.floor(num /7);
+  if (num > 6) {
+    num > 48 ? multiplier = Math.floor((Number(num) % 49) /7) : multiplier = Math.floor(num /7);
+
 
     if (multiplier < 2) {
       note = note + (multiplier + 1) 
@@ -573,7 +608,8 @@ window.addEventListener("resize", (e) => {
 
 scaleCtrl.addEventListener("change", (e) => {
   if (!startBool) {
-    switch (e.target.value) {
+    currentScale = e.target.value
+    switch (currentScale) {
       case "major":
         currentScaleCallback = getFrequencyMajorHectatonic
         break;
@@ -599,6 +635,95 @@ scaleCtrl.addEventListener("change", (e) => {
   }
 })
 
+tuningCtrl.addEventListener("change", (e) => {
+  if (!startBool) {
+    switch (currentScale) {
+      case "major":
+      case "harmonic":
+      case "melodic":
+        switch (e.target.value) {
+          case "thirds":
+            tuningInterval = 2;
+            break;
+          case "fourths": 
+            tuningInterval = 3;
+            break;
+          case "fifths":
+            tuningInterval = 4;
+            break;
+          case "octaves":
+            tuningInterval = 7
+            break;
+          default:
+            tuningInterval = 1;
+            break;
+        }
+        break;
+      case "pentatonic":
+        switch (e.target.value) {
+          case "thirds":
+            tuningInterval = 2;
+            break;
+          case "fourths": 
+            tuningInterval = 3;
+            break;
+          case "fifths":
+            tuningInterval = 4;
+            break;
+          case "octaves":
+            tuningInterval = 5;
+            break;
+          default:
+            tuningInterval = 0;
+            break;
+        }
+        break;
+      case "chromatic":
+        switch (e.target.value) {
+          case "major seconds":
+            tuningInterval = 2;
+            break;
+          case "minor thirds":
+            tuningInterval = 3;
+            break;
+          case "major thirds":
+            tuningInterval = 4;
+            break;
+          case "fourths": 
+            tuningInterval = 5;
+            break;
+          case "fifths":
+            tuningInterval = 7;
+            break;
+          case "octaves":
+            tuningInterval = 12
+            break;
+          default:
+            tuningInterval = 1;
+            break;
+        }
+        break;
+    }
+
+    document.querySelectorAll(".cell").forEach((elem) => {
+      let noteNum;
+      if (currentScale == "pentatonic") {
+        noteNum = (Number(elem.dataset.row) * tuningInterval) + Number(elem.dataset.col) - (tuningInterval)
+      //(row *3) + col  - 3 
+      }
+      else {
+        noteNum = (Number(elem.dataset.row) * tuningInterval) + Number(elem.dataset.col) - (tuningInterval + 1)
+        //(row *4) + col  - 5 
+      }
+
+      elem.dataset.noteNum = noteNum
+      let noteData = currentScaleCallback(noteNum)
+      elem.dataset.note = noteData[1]
+      elem.innerHTML = noteData[1]
+    })
+
+  }
+})
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
