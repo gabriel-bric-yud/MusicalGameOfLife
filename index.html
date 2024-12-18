@@ -28,10 +28,10 @@
         <div id = "controlsInner">
           <label for = "scaleCtrl">Scale:</label>
           <select id = "scaleCtrl">
-            <option value = "major"> Major</option>
+            <option value = "major" selected> Major</option>
+            <option value = "pentatonic"> Major Pentatonic</option>
             <option value = "harmonic"> Harmonic Minor</option>
             <option value = "melodic"> Melodic Minor</option>
-            <option value = "pentatonic"> Major Pentatonic</option>
             <option value = "chromatic">Chromatic</option>
           </select>
 
@@ -44,11 +44,11 @@
             <option value = "octaves">Octaves</option>
           </select>
 
-          <label for = "rowCtrl">Num Rows: <span id = "sizeValue">15</span> </label>
-          <input type="range" min="5" max="21" value="16" class="slider" id="sizeSlider">
+          <label for = "rowCtrl">Num Rows: <span id = "rowValue">15</span> </label>
+          <input type="range" min="5" max="44" value="16" class="slider" id="rowCtrl">
 
-          <label for = "columnCtrl">Num Columns: <span id = "sizeValue">15</span> </label>
-          <input type="range" min="5" max="21" value="16" class="slider" id="sizeSlider">
+          <label for = "columnCtrl">Num Columns: <span id = "columnValue">15</span> </label>
+          <input type="range" min="5" max="44" value="16" class="slider" id="columnCtrl">
 
         </div>
   

@@ -2,8 +2,10 @@ const startBtn = document.querySelector("#startBtn");
 const resetBtn = document.querySelector("#resetBtn");
 const scaleCtrl = document.querySelector("#scaleCtrl")
 const tuningCtrl = document.querySelector("#tuningCtrl")
-const columnCtrl = document.querySelector("#rowCtrl")
-const rowCtrl = document.querySelector("#columnCtrl")
+const columnCtrl = document.querySelector("#columnCtrl")
+const columnTxt = document.querySelector("#columnValue")
+const rowCtrl = document.querySelector("#rowCtrl")
+const rowTxt = document.querySelector("#rowValue")
 const game = document.querySelector("#game");
 
 
@@ -12,11 +14,11 @@ let gameTick;
 let birthList = [];
 let deathList = [];
 
-let cellWidthDimension = 16 // hect: 16 || chrom: 16
-let numRows = 15; // hect: 12 || chrom: 14
-let gridDimension = game.getBoundingClientRect().width / cellWidthDimension;
-let currentScaleCallback = getFrequencyChromatic
-let currentScale = "pentatonic"
+let numColumns
+let numRows
+let gridDimension = game.getBoundingClientRect().width / numColumns;
+let currentScaleCallback
+let currentScale
 let tuningInterval
 
 
@@ -28,18 +30,15 @@ function createCell(col, row) {
   cell.dataset.alive = "f";
   cell.dataset.row = row;
   cell.dataset.col = col;
-  cell.dataset.noteNum = (row * 2) + col - 3  // pent: row + (row * 0) + 6 + col - 3 ***** hect: row + (row * 1) + 7 + col - 3 || cell.dataset.noteNum = (row *2) + col - 3 || (row *2) + col + 4 ***** chrom: (row * 4) + col - 5 || row + (row * 4) + col - 2 || (row *3) + col 
-  let noteData = getFrequencyChromatic(cell.dataset.noteNum)
-  if (cell.dataset.row == 1 || cell.dataset.row == numRows || cell.dataset.col == 1 || cell.dataset.col == cellWidthDimension || true) {
-    cell.innerHTML = noteData[1] //getFrequencyMajorHectatonic || getFrequencyChromatic || getFrequencyMajorPentatonic || getFrequencyHarmonicMinorHectatonic || getFrequencyMelodicMinorHectatonic 
+  setNoteNum(cell)
+  if (cell.dataset.row == 1 || cell.dataset.row == numRows || cell.dataset.col == 1 || cell.dataset.col == numColumns || true) {
+    cell.innerHTML = cell.dataset.note //getFrequencyMajorHectatonic || getFrequencyChromatic || getFrequencyMajorPentatonic || getFrequencyHarmonicMinorHectatonic || getFrequencyMelodicMinorHectatonic 
   }
-  cell.dataset.note = noteData[1]
-  //cell.innerHTML = cell.dataset.noteNum
+  cell.dataset.note = cell.dataset.note
   cell.id = col + "/" + row;
-  cell.style.height = gridDimension + "px";
-  cell.style.width = gridDimension + "px";
+  cell.style.height = game.getBoundingClientRect().height/ numRows + "px";
+  cell.style.width = game.getBoundingClientRect().width / numColumns + "px";
   cell.addEventListener("click", (e) => {
-    //e.target.animate({ backgroundColor: ["black", "green", "black"]},1000);
     if (!startBool) {
       e.target.dataset.alive == "f" ? e.target.style.backgroundColor = "green" : e.target.style.backgroundColor = "black";
       e.target.dataset.alive == "f" ? e.target.dataset.alive = "t" : e.target.dataset.alive = "f"; 
@@ -48,16 +47,16 @@ function createCell(col, row) {
   return cell;``
 }
 
-function createRow(rowNum) {
-  for (let colNum = 1; colNum <= cellWidthDimension; colNum++) {
-    let cell = createCell(colNum, rowNum);
+function createRow(col, row) {
+  for (let i = 1; i <= col; i++) {
+    let cell = createCell(i, row);
     game.appendChild(cell);
   }
 }
 
-function createGrid(numCells) {
-  for (let i = 1; i <= numRows; i++) {
-    createRow(i)
+function createGrid(col, row) {
+  for (let i = 1; i <= row; i++) {
+    createRow(col ,i)
   }
 }
 
@@ -67,9 +66,9 @@ function checkNeighbor(col, row, colDirection, rowDirection) {
   let neighborCol = Number(col) + colDirection
   let neighborRow = Number(row) + rowDirection
   if (neighborCol < 1) {
-    neighborCol = cellWidthDimension
+    neighborCol = numColumns
   }
-  else if (neighborCol > cellWidthDimension) {
+  else if (neighborCol > numColumns) {
     neighborCol = 1;
   }
 
@@ -175,7 +174,7 @@ function updateCells() {
     elem.classList.remove("bury")
     elem.classList.add("grow")
     elem.style.color = "white"
-    let noteData = getFrequencyChromatic(elem.dataset.noteNum)
+    let noteData = currentScaleCallback(elem.dataset.noteNum)
     playOsc(noteData[0]) 
     elem.innerHTML = noteData[1]
   })
@@ -233,7 +232,6 @@ function getFrequencyChromatic(num) {
   let noteNum;
   let note = "";
   let freq;
-  console.log(num)
 
   if (num <= 11) {
     noteNum = Number(num);
@@ -596,10 +594,126 @@ function getFrequencyHarmonicMinorHectatonic(num) {
   return [freq, note];
 }
 
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+function setScaleCallback(scale) {
+  switch (scale) {
+    case "major":
+      currentScaleCallback = getFrequencyMajorHectatonic
+      break;
+    case "pentatonic":
+      currentScaleCallback = getFrequencyMajorPentatonic
+      break;
+    case "harmonic":
+      currentScaleCallback = getFrequencyHarmonicMinorHectatonic
+      break;
+    case "melodic":
+      currentScaleCallback = getFrequencyMelodicMinorHectatonic
+      break;
+    case "chromatic":
+      currentScaleCallback = getFrequencyChromatic
+      break;
+  }
+}
+
+function setNoteNum(elem) {
+  let noteNum;
+  if (currentScale == "pentatonic") {
+    noteNum = (Number(elem.dataset.row) * tuningInterval) + Number(elem.dataset.col) - (tuningInterval)
+    //(row *3) + col  - 3 
+  }
+  else {
+    noteNum = (Number(elem.dataset.row) * tuningInterval) + Number(elem.dataset.col) - (tuningInterval + 1)
+    //(row *4) + col  - 5 
+  }
+
+  let noteData = currentScaleCallback(noteNum)
+  elem.dataset.noteNum = noteNum
+  elem.dataset.note = noteData[1]
+  elem.innerHTML = noteData[1]  
+
+}
+
+
+
+function setTuningInterval() {
+  switch (currentScale) {
+    case "major":
+    case "harmonic":
+    case "melodic":
+      switch (tuningCtrl.value) {
+        case "thirds":
+          tuningInterval = 2;
+          break;
+        case "fourths": 
+          tuningInterval = 3;
+          break;
+        case "fifths":
+          tuningInterval = 4;
+          break;
+        case "octaves":
+          tuningInterval = 7
+          break;
+        default:
+          tuningInterval = 1;
+          break;
+      }
+      break;
+    case "pentatonic":
+      switch (tuningCtrl.value) {
+        case "thirds":
+          tuningInterval = 2;
+          break;
+        case "fourths": 
+          tuningInterval = 3;
+          break;
+        case "fifths":
+          tuningInterval = 4;
+          break;
+        case "octaves":
+          tuningInterval = 5;
+          break;
+        default:
+          tuningInterval = 0;
+          break;
+      }
+      break;
+    case "chromatic":
+      switch (tuningCtrl.value) {
+        case "major seconds":
+          tuningInterval = 2;
+          break;
+        case "minor thirds":
+          tuningInterval = 3;
+          break;
+        case "major thirds":
+          tuningInterval = 4;
+          break;
+        case "fourths": 
+          tuningInterval = 5;
+          break;
+        case "fifths":
+          tuningInterval = 7;
+          break;
+        case "octaves":
+          tuningInterval = 12
+          break;
+        default:
+          tuningInterval = 1;
+          break;
+      }
+      break;
+  }
+}
+
+
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 window.addEventListener("resize", (e) => {
-  gridDimension = game.getBoundingClientRect().width / cellWidthDimension;
+  gridDimension = game.getBoundingClientRect().width / numColumns;
   document.querySelectorAll(".cell").forEach((elem) => {
     elem.style.height = gridDimension + "px"
     elem.style.width = gridDimension + "px"
@@ -609,23 +723,7 @@ window.addEventListener("resize", (e) => {
 scaleCtrl.addEventListener("change", (e) => {
   if (!startBool) {
     currentScale = e.target.value
-    switch (currentScale) {
-      case "major":
-        currentScaleCallback = getFrequencyMajorHectatonic
-        break;
-      case "pentatonic":
-        currentScaleCallback = getFrequencyMajorPentatonic
-        break;
-      case "harmonic":
-        currentScaleCallback = getFrequencyHarmonicMinorHectatonic
-        break;
-      case "melodic":
-        currentScaleCallback = getFrequencyMelodicMinorHectatonic
-        break;
-      case "chromatic":
-        currentScaleCallback = getFrequencyChromatic
-        break;
-    }
+    setScaleCallback(currentScale)
     document.querySelectorAll(".cell").forEach((elem) => {
       let noteData = currentScaleCallback(elem.dataset.noteNum)
       elem.dataset.note = noteData[1]
@@ -637,97 +735,47 @@ scaleCtrl.addEventListener("change", (e) => {
 
 tuningCtrl.addEventListener("change", (e) => {
   if (!startBool) {
-    switch (currentScale) {
-      case "major":
-      case "harmonic":
-      case "melodic":
-        switch (e.target.value) {
-          case "thirds":
-            tuningInterval = 2;
-            break;
-          case "fourths": 
-            tuningInterval = 3;
-            break;
-          case "fifths":
-            tuningInterval = 4;
-            break;
-          case "octaves":
-            tuningInterval = 7
-            break;
-          default:
-            tuningInterval = 1;
-            break;
-        }
-        break;
-      case "pentatonic":
-        switch (e.target.value) {
-          case "thirds":
-            tuningInterval = 2;
-            break;
-          case "fourths": 
-            tuningInterval = 3;
-            break;
-          case "fifths":
-            tuningInterval = 4;
-            break;
-          case "octaves":
-            tuningInterval = 5;
-            break;
-          default:
-            tuningInterval = 0;
-            break;
-        }
-        break;
-      case "chromatic":
-        switch (e.target.value) {
-          case "major seconds":
-            tuningInterval = 2;
-            break;
-          case "minor thirds":
-            tuningInterval = 3;
-            break;
-          case "major thirds":
-            tuningInterval = 4;
-            break;
-          case "fourths": 
-            tuningInterval = 5;
-            break;
-          case "fifths":
-            tuningInterval = 7;
-            break;
-          case "octaves":
-            tuningInterval = 12
-            break;
-          default:
-            tuningInterval = 1;
-            break;
-        }
-        break;
-    }
-
+    setTuningInterval()
     document.querySelectorAll(".cell").forEach((elem) => {
-      let noteNum;
-      if (currentScale == "pentatonic") {
-        noteNum = (Number(elem.dataset.row) * tuningInterval) + Number(elem.dataset.col) - (tuningInterval)
-      //(row *3) + col  - 3 
-      }
-      else {
-        noteNum = (Number(elem.dataset.row) * tuningInterval) + Number(elem.dataset.col) - (tuningInterval + 1)
-        //(row *4) + col  - 5 
-      }
-
-      elem.dataset.noteNum = noteNum
-      let noteData = currentScaleCallback(noteNum)
-      elem.dataset.note = noteData[1]
-      elem.innerHTML = noteData[1]
+      setNoteNum(elem)
     })
-
   }
 })
 
+columnCtrl.addEventListener("change", (e) => {
+  columnTxt.innerHTML = e.target.value
+  if (!startBool) {
+    numColumns = e.target.value;
+    while (game.firstChild) {
+      game.firstChild.remove();
+    }
+    gridDimension = game.getBoundingClientRect().width / numColumns;
+    createGrid(numColumns, numRows)
+  }
+})
+
+rowCtrl.addEventListener("change", (e) => {
+  rowTxt.innerHTML = e.target.value
+  if (!startBool) {
+    numRows = e.target.value;
+    while (game.firstChild) {
+      game.firstChild.remove();
+    }
+    gridDimension = game.getBoundingClientRect().width / numColumns;
+    createGrid(numColumns, numRows)
+  }
+})
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-createGrid(cellWidthDimension)
+
+
+
+currentScale = scaleCtrl.value
+setTuningInterval()
+setScaleCallback(currentScale)
+numColumns = columnCtrl.value;
+numRows = rowCtrl.value
+createGrid(numColumns, numRows)
 
 startBtn.addEventListener("click", (e) => {
   if (!startBool) {
@@ -744,6 +792,15 @@ resetBtn.addEventListener("click", (e) => {
     clearInterval(gameTick);
     gameTick = null;
   }
+  while (game.firstChild) {
+    game.firstChild.remove();
+  }
+  currentScale = scaleCtrl.value
+  setTuningInterval()
+  setScaleCallback(currentScale)
+  numColumns = columnCtrl.value;
+  numRows = rowCtrl.value
+  createGrid(numColumns, numRows)
   
   startBool = false;
   clearLists();
