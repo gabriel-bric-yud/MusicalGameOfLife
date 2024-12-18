@@ -77,7 +77,7 @@ label {
 
 
 
-#scaleCtl, #tuningCtl {
+#scaleCtrl, #tuningCtrl {
   text-align: center;
 }
 
@@ -205,7 +205,7 @@ label {
 
   .cell:hover {
     opacity: .8;
-    border: 4px inset blue;
+    border: 4px inset orange;
   }
   
 }
