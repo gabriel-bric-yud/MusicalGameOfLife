@@ -39,11 +39,11 @@ body {
 #game {
   display: flex;
   flex-wrap: wrap;
-  width: 92vw;
-  height: 92vw;
-  margin: 0 auto;
+  width: 95vw;
+  height: 95vw;
+  margin: 20px auto;
   /** border: 4px dashed white; */
-  box-shadow: 0px 0px 5px 5px orange;
+
   border-radius: 5px;
   background-color: black;
 }
@@ -113,8 +113,8 @@ label {
   text-decoration:none;
   border-width: 1px 0px 1px 0px;
   border-style: solid;
-  border-color: navy;
-  border: 1px dotted navy;
+  border-color: blue;
+  border: 1px dotted blue;
   background-color: transparent;
   border-radius: 10%;
   color: orange;
@@ -123,10 +123,7 @@ label {
   font-size: 9px;
 }
 
-.cell:hover {
-  background-color: green !important;
 
-}
 
 @keyframes glowing {
   50% {  background-color: yellow;}
@@ -187,6 +184,7 @@ label {
   #game {
     width: 700px;
     height: 700px;
+    box-shadow: 0px 0px 20px 5px black;
 
   }
 
@@ -209,6 +207,11 @@ label {
   #controlsInner {
     width: 100%; 
     max-width:400px; 
+  }
+
+  .cell:hover {
+    background-color: green !important;
+  
   }
   
 }
