@@ -717,8 +717,8 @@ function setTuningInterval() {
 window.addEventListener("resize", (e) => {
   gridDimension = game.getBoundingClientRect().width / numColumns;
   document.querySelectorAll(".cell").forEach((elem) => {
-    elem.style.height = gridDimension + "px"
-    elem.style.width = gridDimension + "px"
+    elem.style.height = game.getBoundingClientRect().height/ numRows + "px";
+    elem.style.width = game.getBoundingClientRect().width / numColumns + "px";
   })
 })
 
