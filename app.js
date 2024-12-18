@@ -21,44 +21,42 @@ let currentScaleCallback
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function createCell(col, row) {
- let cell = document.createElement("div")
- cell.classList.add("cell");
- cell.dataset.alive = "f";
- cell.dataset.row = row;
- cell.dataset.col = col;
- cell.dataset.noteNum = (row *2) + col  + 4  // pent: row + (row * 0) + 6 + col - 3 ***** hect: row + (row * 1) + 7 + col - 3 || cell.dataset.noteNum = (row *2) + col - 3 || (row *2) + col + 4 ***** chrom: (row * 4) + col - 5 || row + (row * 4) + col - 2 || (row *3) + col 
- let noteData = getFrequencyMajorHectatonic(cell.dataset.noteNum)
- if (cell.dataset.row == 1 || cell.dataset.row == numRows || cell.dataset.col == 1 || cell.dataset.col == cellWidthDimension || true) {
- cell.innerHTML = noteData[1] //getFrequencyMajorHectatonic || getFrequencyChromatic || getFrequencyMajorPentatonic || getFrequencyHarmonicMinorHectatonic || getFrequencyMelodicMinorHectatonic 
- }
- cell.dataset.note = noteData[1]
- //cell.innerHTML = cell.dataset.noteNum
- cell.id = col + "/" + row;
- cell.style.height = gridDimension + "px";
- cell.style.width = gridDimension + "px";
- cell.addEventListener("click", (e) => {
- //e.target.animate({ backgroundColor: ["black", "green", "black"]},1000);
- if (!startBool) {
- e.target.dataset.alive == "f" ? e.target.style.backgroundColor = "green" : e.target.style.backgroundColor = "black";
- e.target.dataset.alive == "f" ? e.target.dataset.alive = "t" : e.target.dataset.alive = "f"; 
- }
-
- })
- return cell;
+  let cell = document.createElement("div")
+  cell.classList.add("cell");
+  cell.dataset.alive = "f";
+  cell.dataset.row = row;
+  cell.dataset.col = col;
+  cell.dataset.noteNum = (row *2) + col  + 4  // pent: row + (row * 0) + 6 + col - 3 ***** hect: row + (row * 1) + 7 + col - 3 || cell.dataset.noteNum = (row *2) + col - 3 || (row *2) + col + 4 ***** chrom: (row * 4) + col - 5 || row + (row * 4) + col - 2 || (row *3) + col 
+  let noteData = getFrequencyMajorHectatonic(cell.dataset.noteNum)
+  if (cell.dataset.row == 1 || cell.dataset.row == numRows || cell.dataset.col == 1 || cell.dataset.col == cellWidthDimension || true) {
+    cell.innerHTML = noteData[1] //getFrequencyMajorHectatonic || getFrequencyChromatic || getFrequencyMajorPentatonic || getFrequencyHarmonicMinorHectatonic || getFrequencyMelodicMinorHectatonic 
+  }
+  cell.dataset.note = noteData[1]
+  //cell.innerHTML = cell.dataset.noteNum
+  cell.id = col + "/" + row;
+  cell.style.height = gridDimension + "px";
+  cell.style.width = gridDimension + "px";
+  cell.addEventListener("click", (e) => {
+    //e.target.animate({ backgroundColor: ["black", "green", "black"]},1000);
+    if (!startBool) {
+      e.target.dataset.alive == "f" ? e.target.style.backgroundColor = "green" : e.target.style.backgroundColor = "black";
+      e.target.dataset.alive == "f" ? e.target.dataset.alive = "t" : e.target.dataset.alive = "f"; 
+    }
+  })
+  return cell;``
 }
 
 function createRow(rowNum) {
- for (let colNum = 1; colNum <= cellWidthDimension; colNum++) {
- let cell = createCell(colNum, rowNum);
- 
- game.appendChild(cell);
- }
+  for (let colNum = 1; colNum <= cellWidthDimension; colNum++) {
+    let cell = createCell(colNum, rowNum);
+    game.appendChild(cell);
+  }
 }
 
 function createGrid(numCells) {
- for (let i = 1; i <= numRows; i++) {
- createRow(i)
- }
+  for (let i = 1; i <= numRows; i++) {
+    createRow(i)
+  }
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
