@@ -453,7 +453,7 @@ function getFrequencyMajorPentatonic(num) {
   //console.log("final freq: " + freq)
   //console.log("note name: " + note)
   return [freq, note];
-  }
+}
 
 function getFrequencyMelodicMinorHectatonic(num) {
   let noteNum;
